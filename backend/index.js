@@ -36,6 +36,19 @@ app.get("/movies", (request, response) => {
   })
 })
 
+//lembrar de melhorar a query da database para retornar só o primeiro e não a lista que tem o primeiro
+app.get("/movies/:id", (request, response) => {
+  const movieId = request.params.id
+  const qry = "SELECT * FROM movies WHERE id = ?"
+
+  database.query(qry, [movieId], (err,data)=>{
+    if(err) {
+      return response.json(err)
+    } else {
+      return response.json(data[0])
+    }
+  })
+})
 
 app.post("/movies", (request, response)=> {
   const qry = "INSERT INTO movies (`title`,`description`, `image`, `price`) VALUES (?, ?, ?, ?)"
